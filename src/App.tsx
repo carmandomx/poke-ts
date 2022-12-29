@@ -1,24 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Input } from '@mui/material'
 import './App.css';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+
+type IForm = {
+  pokeName: string;
+}
 
 function App() {
+
+  const { handleSubmit, control, watch } = useForm<IForm>({
+    defaultValues: {
+      pokeName: ''
+    }
+  });
+
+  console.log(watch('pokeName'))
+
+  const onSubmit: SubmitHandler<IForm> = data => {
+    console.log(data);
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller 
+          name='pokeName'
+          control={control}
+          render={({field}) => <Input placeholder='Nombre del Pokemon'  {...field} />}
+        
+        />
+
+      <input type='submit' />
+      </form>
     </div>
   );
 }
